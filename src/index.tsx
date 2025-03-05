@@ -9,6 +9,7 @@ import Checklist from '@editorjs/checklist'
 import Delimiter from '@editorjs/delimiter'
 import InlineCode from '@editorjs/inline-code'
 import type { FC } from 'react'
+import '@fontsource/lexend';
 
 import { Retool } from '@tryretool/custom-component-support'
 
@@ -69,9 +70,13 @@ export const EditorComponent: FC = () => {
   }, [])
 
   return (
-    <div>
+    <div style={{ fontFamily: 'Lexend, sans-serif' }}>
       <div>Hello {name}!</div>
-      <div id="editorjs" ref={editorRef}></div>
+      <div
+        id="editorjs"
+        ref={editorRef}
+        style={{ padding: '10px' }}
+      ></div>
     </div>
   )
 };
