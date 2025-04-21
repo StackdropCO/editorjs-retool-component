@@ -18,10 +18,10 @@ export const EditorComponent: FC = () => {
   const editorInstance = useRef<EditorJS | null>(null)
   const hasInitialized = useRef(false)
 
-  const [setEditorContent] = Retool.useStateString({
+  const [editorContent, setEditorContent] = Retool.useStateString({
     name: 'editorContent'
   })
-  const [savedData] = Retool.useStateString({ name: 'savedData' })
+  const [savedData, setSavedData] = Retool.useStateString({ name: 'savedData' })
 
   useEffect(() => {
     if (!editorRef.current || hasInitialized.current) return
