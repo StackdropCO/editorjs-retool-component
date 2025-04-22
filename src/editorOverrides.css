@@ -1,0 +1,4 @@
+/* Remove padding-bottom */
+.codex-editor__redactor {
+  padding-bottom: 0 !important;
+}
