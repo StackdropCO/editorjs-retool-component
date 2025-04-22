@@ -23,6 +23,14 @@ export const EditorComponent: FC = () => {
   })
   const [savedData, setSavedData] = Retool.useStateString({ name: 'savedData' })
 
+  const [backgroundColor, setBackgroundColor] = Retool.useStateString({
+    name: 'backgroundColor'
+  })
+
+  const [textColor, setTextColor] = Retool.useStateString({
+    name: 'textColor'
+  })
+
   useEffect(() => {
     if (!editorRef.current || hasInitialized.current) return
 
@@ -101,7 +109,8 @@ export const EditorComponent: FC = () => {
         style={{
           padding: '16px',
           height: '100%',
-          backgroundColor: '#f8fafc',
+          backgroundColor: backgroundColor || '#f8fafc',
+          color: textColor || '#000',
           borderRadius: '8px'
         }}
       ></div>
