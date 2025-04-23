@@ -1,4 +1,4 @@
-import './editorOverrides.css'
+import './style.css'
 
 import React, { useEffect, useRef } from 'react'
 import EditorJS from '@editorjs/editorjs'
