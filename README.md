@@ -68,12 +68,11 @@ A powerful rich text editor custom component for Retool built with Editor.js, pr
 
 The component exposes the following properties in Retool:
 
-| Property          | Type   | Description                                            |
-| ----------------- | ------ | ------------------------------------------------------ |
-| `editorContent`   | String | The current editor content as JSON string              |
-| `savedData`       | String | Initialize the editor with saved content (JSON string) |
-| `backgroundColor` | String | Background color of the editor (defaults to #f8fafc)   |
-| `textColor`       | String | Text color in the editor (defaults to #000)            |
+| Property          | Type   | Description                                          |
+| ----------------- | ------ | ---------------------------------------------------- |
+| `content`         | String | The current editor content as JSON string            |
+| `backgroundColor` | String | Background color of the editor (defaults to #f8fafc) |
+| `textColor`       | String | Text color in the editor (defaults to #000)          |
 
 ## Usage Example
 
@@ -82,18 +81,14 @@ The component exposes the following properties in Retool:
 1. Drag the Editor.js component onto your Retool canvas
 2. Configure the component settings:
    - Set `backgroundColor` and `textColor` if desired
-   - Connect `savedData` to load existing content
+   - Connect `content` to load existing content
 
-### Saving Content
+### Saving and Loading Content
 
-1. Create a button with an event handler
-2. Access the editor content with `{{components.editorJs.editorContent}}`
-3. Use this data in a query to save to your database
-
-### Loading Content
-
-1. Create a query to fetch existing content
-2. Set the `savedData` property to `{{data.yourQuery.content}}`
+1. The `content` property serves as both input and output:
+   - To load content: Set the `content` property to your existing JSON data
+   - To save content: The component will automatically update the `content` property as the user types
+2. You can use the `content` value in queries to save to your database
 
 ## Data Structure
 
