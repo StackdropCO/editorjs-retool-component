@@ -7,6 +7,7 @@ A powerful rich text editor custom component for Retool built with Editor.js, pr
 - **Block-Style Editing**: Create structured content with various block types
 - **Clean JSON Output**: All content is stored as structured JSON data
 - **Customizable Styling**: Change background and text colors
+- **Dynamic Tool Configuration**: Enable/disable specific formatting tools as needed
 - **Rich Formatting Tools**:
   - Headers (H1-H4)
   - Lists (ordered and unordered)
@@ -74,6 +75,27 @@ The component exposes the following properties in Retool:
 | `backgroundColor` | String | Background color of the editor (defaults to #f8fafc) |
 | `textColor`       | String | Text color in the editor (defaults to #000)          |
 
+### Tool Configuration
+
+Each formatting tool can be enabled or disabled independently through Retool's inspector panel:
+
+| Tool Property      | Type    | Description                                |
+| ------------------ | ------- | ------------------------------------------ |
+| `enableHeader`     | Boolean | Enable/disable header formatting           |
+| `enableList`       | Boolean | Enable/disable list formatting             |
+| `enableQuote`      | Boolean | Enable/disable quote blocks                |
+| `enableChecklist`  | Boolean | Enable/disable checklist blocks            |
+| `enableCode`       | Boolean | Enable/disable code blocks                 |
+| `enableInlineCode` | Boolean | Enable/disable inline code formatting      |
+| `enableMarker`     | Boolean | Enable/disable marker/highlight formatting |
+| `enableDelimiter`  | Boolean | Enable/disable delimiter blocks            |
+| `enableEmbed`      | Boolean | Enable/disable embed blocks                |
+| `enableTable`      | Boolean | Enable/disable table blocks                |
+| `enableWarning`    | Boolean | Enable/disable warning blocks              |
+| `enableLink`       | Boolean | Enable/disable link tool                   |
+| `enableUnderline`  | Boolean | Enable/disable underline formatting        |
+| `enableFootnotes`  | Boolean | Enable/disable footnotes                   |
+
 ## Usage Example
 
 ### Basic Setup
@@ -82,6 +104,7 @@ The component exposes the following properties in Retool:
 2. Configure the component settings:
    - Set `backgroundColor` and `textColor` if desired
    - Connect `content` to load existing content
+   - Enable/disable specific formatting tools as needed
 
 ### Saving and Loading Content
 
