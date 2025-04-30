@@ -27,20 +27,21 @@ export const EditorComponent: FC = () => {
   const editorInstance = useRef<EditorJS | null>(null)
   const hasInitialized = useRef(false)
 
-  const [editorContent, setEditorContent] = Retool.useStateString({ name: 'editorContent' })
-  const [savedData, setSavedData] = Retool.useStateString({ name: 'savedData' })
-  const [backgroundColor, setBackgroundColor] = Retool.useStateString({ name: 'backgroundColor' })
+  const [content, setContent] = Retool.useStateString({ name: 'content' })
+  const [backgroundColor, setBackgroundColor] = Retool.useStateString({
+    name: 'backgroundColor'
+  })
   const [textColor, setTextColor] = Retool.useStateString({ name: 'textColor' })
 
   useEffect(() => {
     if (!editorRef.current || hasInitialized.current) return
 
     let parsedData = {}
-    if (savedData) {
+    if (content) {
       try {
-        parsedData = JSON.parse(savedData)
+        parsedData = JSON.parse(content)
       } catch (error) {
-        console.error('Error parsing savedData:', error)
+        console.error('Error parsing content:', error)
       }
     }
 
@@ -71,8 +72,8 @@ export const EditorComponent: FC = () => {
             rows: 2,
             cols: 3,
             maxRows: 5,
-            maxCols: 5,
-          },
+            maxCols: 5
+          }
         },
         list: {
           class: EditorjsList,
@@ -82,7 +83,7 @@ export const EditorComponent: FC = () => {
             defaultStyle: 'unordered',
             maxLevel: 3,
             counterTypes: ['numeric']
-          },
+          }
         },
         quote: {
           class: Quote,
@@ -96,7 +97,7 @@ export const EditorComponent: FC = () => {
         code: {
           class: Code,
           config: {
-            placeholder: 'Enter code here...',
+            placeholder: 'Enter code here...'
           }
         },
         embed: {
@@ -107,7 +108,8 @@ export const EditorComponent: FC = () => {
               youtube: true,
               codepen: {
                 regex: /https?:\/\/codepen.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
-                embedUrl: 'https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2',
+                embedUrl:
+                  'https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2',
                 html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
                 height: 300,
                 width: 600,
@@ -130,7 +132,7 @@ export const EditorComponent: FC = () => {
         },
         inlineCode: {
           class: InlineCode,
-          shortcut: 'CMD+SHIFT+M',
+          shortcut: 'CMD+SHIFT+M'
         },
         linkTool: {
           class: LinkTool,
@@ -144,14 +146,14 @@ export const EditorComponent: FC = () => {
           shortcut: 'CMD+SHIFT+W',
           config: {
             titlePlaceholder: 'Title',
-            messagePlaceholder: 'Message',
-          },
+            messagePlaceholder: 'Message'
+          }
         },
         footnotes: {
           class: Footnotes,
-          config:{
+          config: {
             placeholder: 'Footnote text',
-            shortcut: 'CMD+SHIFT+F',
+            shortcut: 'CMD+SHIFT+F'
           }
         }
       },
@@ -160,7 +162,7 @@ export const EditorComponent: FC = () => {
         try {
           const data = await editorInstance.current.save()
           const jsonData = JSON.stringify(data)
-          setEditorContent(jsonData)
+          setContent(jsonData)
         } catch (error) {
           console.error('Error saving editor data:', error)
         }
@@ -178,8 +180,7 @@ export const EditorComponent: FC = () => {
         }
       }
     }
-  }, [savedData, setEditorContent])
-
+  }, [content, setContent])
   return (
     <div style={{ fontFamily: 'Lexend, sans-serif' }}>
       <div
