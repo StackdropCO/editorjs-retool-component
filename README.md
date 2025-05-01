@@ -2,6 +2,12 @@
 
 A powerful rich text editor custom component for Retool built with Editor.js, providing a modern WYSIWYG editing experience with clean JSON output.
 
+## Preview
+
+https://github.com/user-attachments/assets/25c60f0c-307d-40a8-8984-751c93e762ba
+
+https://github.com/user-attachments/assets/cc23a9e3-6ea0-4b19-bef9-3019c85c1356
+
 ## Features
 
 - **Block-Style Editing**: Create structured content with various block types
