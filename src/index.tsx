@@ -138,8 +138,8 @@ export const EditorComponent: FC = () => {
       paragraph: {
         class: Paragraph,
         inlineToolbar: true,
-        plceholder: '',
-        preserveBlank: false
+        placeholder: '',
+        preserveBlank: true
       }
     }
 
