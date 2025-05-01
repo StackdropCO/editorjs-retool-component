@@ -5,7 +5,6 @@ import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import EditorjsList from '@editorjs/list' // https://github.com/editor-js/list
 import Quote from '@editorjs/quote'
-import Checklist from '@editorjs/checklist' // https://github.com/editor-js/checklist
 import Code from '@editorjs/code' // https://github.com/editor-js/code
 import InlineCode from '@editorjs/inline-code' // https://github.com/editor-js/inline-code
 import Marker from '@editorjs/marker'
@@ -65,13 +64,6 @@ export const EditorComponent: FC = () => {
     initialValue: false,
     description: 'Enables Quotes',
     label: 'Quote',
-    inspector: 'checkbox'
-  })
-  const [enableChecklist, _setEnableChecklist] = Retool.useStateBoolean({
-    name: 'enableChecklist',
-    initialValue: false,
-    description: 'Enables Checklists',
-    label: 'Checklist',
     inspector: 'checkbox'
   })
   const [enableCode, _setEnableCode] = Retool.useStateBoolean({
@@ -192,13 +184,6 @@ export const EditorComponent: FC = () => {
           quotePlaceholder: 'Enter a quote',
           captionPlaceholder: "Quote's author"
         }
-      }
-    }
-
-    if (enableChecklist) {
-      tools.checklist = {
-        class: Checklist,
-        inlineToolbar: true
       }
     }
 
@@ -396,7 +381,6 @@ export const EditorComponent: FC = () => {
     enableHeader,
     enableList,
     enableQuote,
-    enableChecklist,
     enableCode,
     enableInlineCode,
     enableMarker,
