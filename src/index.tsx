@@ -16,7 +16,6 @@ import LinkTool from '@editorjs/link'
 // import Image from '@editorjs/image'
 import Underline from '@editorjs/underline'
 import Paragraph from '@editorjs/paragraph'
-import Footnotes from '@editorjs/footnotes' // https://github.com/editor-js/footnotes-tune
 
 import type { FC } from 'react'
 import { Retool } from '@tryretool/custom-component-support'
@@ -129,13 +128,6 @@ export const EditorComponent: FC = () => {
     label: 'Underline',
     inspector: 'checkbox'
   })
-  const [enableFootnotes, _setEnableFootnotes] = Retool.useStateBoolean({
-    name: 'enableFootnotes',
-    initialValue: false,
-    description: 'Enables Footnotes',
-    label: 'Footnotes',
-    inspector: 'checkbox'
-  })
 
   // Effect for editor initialization and tool configuration
   useEffect(() => {
@@ -145,7 +137,6 @@ export const EditorComponent: FC = () => {
     const tools: any = {
       paragraph: {
         class: Paragraph,
-        tunes: enableFootnotes ? ['footnotes'] : [],
         inlineToolbar: true,
         plceholder: '',
         preserveBlank: false
@@ -165,7 +156,6 @@ export const EditorComponent: FC = () => {
     if (enableList) {
       tools.list = {
         class: EditorjsList,
-        tunes: enableFootnotes ? ['footnotes'] : [],
         inlineToolbar: true,
         config: {
           defaultStyle: 'unordered',
@@ -276,16 +266,6 @@ export const EditorComponent: FC = () => {
       tools.underline = Underline
     }
 
-    if (enableFootnotes) {
-      tools.footnotes = {
-        class: Footnotes,
-        config: {
-          placeholder: 'Footnote text',
-          shortcut: 'CMD+SHIFT+F'
-        }
-      }
-    }
-
     // Only initialize if not already initialized
     if (!editorInstance.current) {
       let parsedData = { blocks: [] }
@@ -389,8 +369,7 @@ export const EditorComponent: FC = () => {
     enableTable,
     enableWarning,
     enableLink,
-    enableUnderline,
-    enableFootnotes
+    enableUnderline
   ])
 
   return (
