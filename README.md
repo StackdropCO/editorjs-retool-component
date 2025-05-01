@@ -4,9 +4,9 @@ A powerful rich text editor custom component for Retool built with Editor.js, pr
 
 ## Preview
 
-https://github.com/user-attachments/assets/25c60f0c-307d-40a8-8984-751c93e762ba
+![darkmode preview](https://github.com/user-attachments/assets/acc66815-2008-467d-b4cb-a667521c7597)
 
-https://github.com/user-attachments/assets/cc23a9e3-6ea0-4b19-bef9-3019c85c1356
+![lightmode preview](https://github.com/user-attachments/assets/2050f0b4-84b5-4287-84ac-06126cf428ad)
 
 ## Features
 
