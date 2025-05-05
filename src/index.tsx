@@ -1,6 +1,6 @@
 import './style.css'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import EditorJS from '@editorjs/editorjs'
 import Header from '@editorjs/header'
 import EditorjsList from '@editorjs/list' // https://github.com/editor-js/list
@@ -13,9 +13,10 @@ import Embed from '@editorjs/embed' // https://github.com/editor-js/embed
 import Table from '@editorjs/table' // https://github.com/editor-js/table
 import Warning from '@editorjs/warning'
 import LinkTool from '@editorjs/link'
-// import Image from '@editorjs/image'
+import ImageTool from '@editorjs/image'
 import Underline from '@editorjs/underline'
 import Paragraph from '@editorjs/paragraph'
+import { createClient } from '@supabase/supabase-js'
 
 import type { FC } from 'react'
 import { Retool } from '@tryretool/custom-component-support'
@@ -23,8 +24,7 @@ import { Retool } from '@tryretool/custom-component-support'
 export const EditorComponent: FC = () => {
   const editorRef = useRef<HTMLDivElement>(null)
   const editorInstance = useRef<EditorJS | null>(null)
-  const hasInitialized = useRef(false)
-  const debounceTimeout = useRef<NodeJS.Timeout>()
+  const prevImagesRef = useRef<string[]>([])
 
   // Content and styling states
   const [content, setContent] = Retool.useStateString({
@@ -32,6 +32,25 @@ export const EditorComponent: FC = () => {
     label: 'Editor content',
     description: 'This is the value of the editor'
   })
+
+  // Supabase configuration states
+  const [supabaseBucket, setSupabaseBucket] = Retool.useStateString({
+    name: 'supabaseBucket',
+    label: 'Supabase Bucket',
+    description: 'The name of the Supabase bucket to store images'
+  })
+
+  const [supabaseUrl, setSupabaseUrl] = Retool.useStateString({
+    name: 'supabaseUrl',
+    label: 'Supabase URL',
+    description: 'The URL of the Supabase instance'
+  })
+  const [supabaseKey, setSupabaseKey] = Retool.useStateString({
+    name: 'supabaseKey',
+    label: 'Supabase Key',
+    description: 'The key of the Supabase instance'
+  })
+
   const [backgroundColor, setBackgroundColor] = Retool.useStateString({
     name: 'backgroundColor',
     label: 'Background color',
@@ -128,6 +147,47 @@ export const EditorComponent: FC = () => {
     label: 'Underline',
     inspector: 'checkbox'
   })
+  const [enableImage, _setEnableImage] = Retool.useStateBoolean({
+    name: 'enableImage',
+    initialValue: false,
+    description: 'Enables Image Upload',
+    label: 'Image',
+    inspector: 'checkbox'
+  })
+
+  const [newImagePaths, setNewImagePaths] = Retool.useStateArray({
+    inspector: 'hidden',
+    name: 'newImagePaths',
+    initialValue: []
+  })
+
+  useEffect(() => {
+    setNewImagePaths([])
+    prevImagesRef.current = []
+  }, [])
+
+  const supabase = useMemo(
+    () => createClient(supabaseUrl, supabaseKey),
+    [supabaseUrl, supabaseKey]
+  )
+
+  const deleteImage = async (filePath: string) => {
+    // 1) delete from Supabase
+    const { error } = await supabase.storage
+      .from(supabaseBucket)
+      .remove([filePath])
+
+    if (error) {
+      console.error('Failed to delete', filePath, error)
+      return
+    }
+
+    // 2) remove it from your Retool state array
+    setNewImagePaths(
+      // note: use the current value, filter out the one you just deleted
+      newImagePaths.filter((path) => path !== filePath)
+    )
+  }
 
   // Effect for editor initialization and tool configuration
   useEffect(() => {
@@ -266,97 +326,105 @@ export const EditorComponent: FC = () => {
       tools.underline = Underline
     }
 
-    // Only initialize if not already initialized
-    if (!editorInstance.current) {
-      let parsedData = { blocks: [] }
-      if (content) {
-        try {
-          parsedData = JSON.parse(content)
-        } catch (error) {
-          console.error('Error parsing content:', error)
-        }
-      }
-
-      editorInstance.current = new EditorJS({
-        holder: editorRef.current,
-        placeholder: 'Start typing here...',
-        data: parsedData,
-        tools,
-        onChange: async () => {
-          if (!editorInstance.current) return
-          try {
-            const data = await editorInstance.current.save()
-            const jsonData = JSON.stringify(data)
-
-            // Clear any existing timeout
-            if (debounceTimeout.current) {
-              clearTimeout(debounceTimeout.current)
-            }
-
-            // Debounce the content update
-            debounceTimeout.current = setTimeout(() => {
-              // Only update content if it's different to prevent infinite loops
-              if (jsonData !== content) {
-                setContent(jsonData)
-              }
-            }, 1000) // 1 second debounce
-          } catch (error) {
-            console.error('Error saving editor data:', error)
-          }
-        }
-      })
-    } else {
-      // If editor is already initialized, destroy and recreate with new tools
-      const currentEditor = editorInstance.current
-      const saveAndReinitialize = async () => {
-        try {
-          const currentData = await currentEditor.save()
-          currentEditor.destroy()
-          editorInstance.current = new EditorJS({
-            holder: editorRef.current!,
-            placeholder: 'Start typing here...',
-            data: currentData,
-            tools,
-            onChange: async () => {
-              if (!editorInstance.current) return
+    if (enableImage) {
+      tools.image = {
+        class: ImageTool,
+        config: {
+          uploader: {
+            uploadByFile: async (file: File) => {
               try {
-                const data = await editorInstance.current.save()
-                const jsonData = JSON.stringify(data)
+                // Generate a unique filename
+                const fileName = `public/${Date.now()}-${file.name}`
 
-                // Clear any existing timeout
-                if (debounceTimeout.current) {
-                  clearTimeout(debounceTimeout.current)
+                // Upload to Supabase
+                const { data, error } = await supabase.storage
+                  .from(supabaseBucket)
+                  .upload(fileName, file)
+
+                if (error) {
+                  console.error('Error uploading image:', error)
+                  throw error
                 }
 
-                // Debounce the content update
-                debounceTimeout.current = setTimeout(() => {
-                  // Only update content if it's different to prevent infinite loops
-                  if (jsonData !== content) {
-                    setContent(jsonData)
+                setNewImagePaths([...newImagePaths, fileName])
+
+                // Get the public URL
+                const {
+                  data: { publicUrl }
+                } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName)
+
+                return {
+                  success: 1,
+                  file: {
+                    url: publicUrl,
+                    path: fileName
                   }
-                }, 1000) // 1 second debounce
+                }
               } catch (error) {
-                console.error('Error saving editor data:', error)
+                console.error('Error uploading image:', error)
+                return {
+                  success: 0,
+                  error: {
+                    message: 'Failed to upload image'
+                  }
+                }
               }
             }
-          })
-        } catch (error) {
-          console.error('Error saving editor data:', error)
+          }
         }
       }
-      saveAndReinitialize()
     }
 
-    return () => {
-      if (editorInstance.current) {
-        try {
-          editorInstance.current.destroy()
-          editorInstance.current = null
-        } catch (err) {
-          console.error('Error destroying editor instance', err)
-        }
+    // Only initialize if not already initialized
+    let parsedData = { blocks: [] }
+    if (content) {
+      try {
+        parsedData = JSON.parse(content)
+      } catch (error) {
+        console.error('Error parsing content:', error)
       }
     }
+
+    const initialPaths = parsedData.blocks
+      .filter((b: any) => b.type === 'image')
+      .map((b: any) => b.data.file.path as string)
+    prevImagesRef.current = initialPaths
+
+    editorInstance.current = new EditorJS({
+      holder: editorRef.current,
+      placeholder: 'Start typing here...',
+      data: parsedData,
+      tools,
+      onChange: async () => {
+        if (!editorInstance.current) return
+        try {
+          const data = await editorInstance.current.save()
+          const jsonData = JSON.stringify(data)
+
+          // extract all image URLs from the new content
+          const newPaths = data.blocks
+            .filter((b: any) => b.type === 'image')
+            .map((b: any) => b.data.file.path as string)
+
+          // compare to the previous URLs
+          const deleted = prevImagesRef.current.filter(
+            (p) => !newPaths.includes(p)
+          )
+
+          // delete any that went away
+          await Promise.all(deleted.map((p) => deleteImage(p)))
+
+          prevImagesRef.current = newPaths
+
+          // update Retool state
+          if (jsonData !== content) {
+            setContent(jsonData)
+          }
+        } catch (err) {
+          console.error('Error in onChange:', err)
+        }
+      }
+    })
   }, [
     enableHeader,
     enableList,
@@ -369,7 +437,9 @@ export const EditorComponent: FC = () => {
     enableTable,
     enableWarning,
     enableLink,
-    enableUnderline
+    enableUnderline,
+    enableImage,
+    supabaseBucket
   ])
 
   return (

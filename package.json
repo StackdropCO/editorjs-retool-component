@@ -10,6 +10,7 @@
     "@editorjs/embed": "^2.7.6",
     "@editorjs/footnotes": "^1.1.0",
     "@editorjs/header": "^2.8.8",
+    "@editorjs/image": "^2.10.2",
     "@editorjs/inline-code": "^1.5.1",
     "@editorjs/link": "^2.6.2",
     "@editorjs/list": "^2.0.6",
@@ -20,6 +21,7 @@
     "@editorjs/underline": "^1.2.1",
     "@editorjs/warning": "^1.4.1",
     "@fontsource/lexend": "^5.2.5",
+    "@supabase/supabase-js": "^2.49.4",
     "@tryretool/custom-component-support": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
