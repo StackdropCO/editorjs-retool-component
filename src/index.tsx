@@ -333,8 +333,10 @@ export const EditorComponent: FC = () => {
           uploader: {
             uploadByFile: async (file: File) => {
               try {
+                const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+
                 // Generate a unique filename
-                const fileName = `public/${Date.now()}-${file.name}`
+                const fileName = `public/${Date.now()}-${safeName}`
 
                 // Upload to Supabase
                 const { data, error } = await supabase.storage
