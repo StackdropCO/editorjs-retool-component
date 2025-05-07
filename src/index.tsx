@@ -50,6 +50,11 @@ export const EditorComponent: FC = () => {
     label: 'Supabase Key',
     description: 'The key of the Supabase instance'
   })
+  const [articleId, setArticleId] = Retool.useStateString({
+    name: 'articleId',
+    label: 'Article ID',
+    description: 'The ID of the article to store images'
+  })
 
   const [backgroundColor, setBackgroundColor] = Retool.useStateString({
     name: 'backgroundColor',
@@ -336,7 +341,7 @@ export const EditorComponent: FC = () => {
                 const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
 
                 // Generate a unique filename
-                const fileName = `public/${Date.now()}-${safeName}`
+                const fileName = `articles/${articleId}/content/${safeName}`
 
                 // Upload to Supabase
                 const { data, error } = await supabase.storage
