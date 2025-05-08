@@ -56,6 +56,12 @@ export const EditorComponent: FC = () => {
     description: 'The ID of the article to store images'
   })
 
+  const [newImagePaths, setNewImagePaths] = Retool.useStateArray({
+    inspector: 'text',
+    name: 'newImagePaths',
+    initialValue: []
+  })
+
   const [backgroundColor, setBackgroundColor] = Retool.useStateString({
     name: 'backgroundColor',
     label: 'Background color',
@@ -158,12 +164,6 @@ export const EditorComponent: FC = () => {
     description: 'Enables Image Upload',
     label: 'Image',
     inspector: 'checkbox'
-  })
-
-  const [newImagePaths, setNewImagePaths] = Retool.useStateArray({
-    inspector: 'hidden',
-    name: 'newImagePaths',
-    initialValue: []
   })
 
   useEffect(() => {
