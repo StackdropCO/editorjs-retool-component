@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
 .ce-block__content,
 .ce-toolbar__content {
   max-width: calc(100% - 80px) !important;
