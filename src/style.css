@@ -8,3 +8,22 @@
 .cdx-block {
   max-width: 100% !important;
 }
+
+@media (prefers-color-scheme: dark) {
+  #editorjs ::selection {
+    background-color: rgba(255, 214, 10, 0.4);
+    color: #111;
+  }
+  #editorjs ::-moz-selection {
+    background-color: rgba(255, 214, 10, 0.4);
+    color: #111;
+  }
+
+  .cdx-marker {
+    background-color: rgba(255, 214, 10, 0.4) !important;
+    color: #111 !important;
+  }
+  .ce-block--selected .ce-block__content {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+  }
+}
