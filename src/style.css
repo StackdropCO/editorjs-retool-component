@@ -9,19 +9,40 @@
   max-width: 100% !important;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
+  /* text drag‐selection */
   #editorjs ::selection {
-    background-color: rgba(255, 214, 10, 0.4);
-    color: #111;
+    background-color: rgba(245, 158, 11, 0.3); /* amber-500 @ 30% */
+    color: #000; /* keep selected text readable */
   }
   #editorjs ::-moz-selection {
-    background-color: rgba(255, 214, 10, 0.4);
-    color: #111;
+    background-color: rgba(245, 158, 11, 0.3);
+    color: #000;
+  }
+
+  /* inline “marker” tool */
+  .cdx-marker {
+    background-color: rgba(245, 158, 11, 0.3) !important;
+    color: #000 !important;
+  }
+
+  /* active block highlight */
+  .ce-block--selected .ce-block__content {
+    outline: 2px solid #f59e0b !important; /* amber-500 */
+    background-color: rgba(245, 158, 11, 0.1) !important; /* light tint */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #editorjs ::selection {
+    background-color: rgba(245, 158, 11, 0.1);
+  }
+  #editorjs ::-moz-selection {
+    background-color: rgba(245, 158, 11, 0.1);
   }
 
   .cdx-marker {
-    background-color: rgba(255, 214, 10, 0.4) !important;
-    color: #111 !important;
+    background-color: rgba(245, 158, 11, 0.1) !important;
   }
   .ce-block--selected .ce-block__content {
     background-color: rgba(245, 158, 11, 0.1) !important;
