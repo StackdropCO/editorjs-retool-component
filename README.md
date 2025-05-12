@@ -1,32 +1,37 @@
-# Editor.js Retool Component
+## Editor.js Retool Component with Supabase Image Upload
 
-A powerful rich text editor custom component for Retool built with Editor.js, providing a modern WYSIWYG editing experience with clean JSON output.
+A powerful rich text editor custom component for Retool built on Editor.js, featuring modern WYSIWYG block-style editing, clean JSON output, dynamic tool configuration, and built-in Supabase image upload & management.
 
 ## Preview
 
 ![darkmode preview](https://github.com/user-attachments/assets/acc66815-2008-467d-b4cb-a667521c7597)
-
 ![lightmode preview](https://github.com/user-attachments/assets/2050f0b4-84b5-4287-84ac-06126cf428ad)
 
 ## Features
 
-- **Block-Style Editing**: Create structured content with various block types
-- **Clean JSON Output**: All content is stored as structured JSON data
-- **Customizable Styling**: Change background and text colors
-- **Dynamic Tool Configuration**: Enable/disable specific formatting tools as needed
-- **Rich Formatting Tools**:
-  - Headers (H1-H4)
-  - Lists (ordered and unordered)
-  - Quotes
-  - Code blocks
-  - Checklists
-  - Tables
-  - Embeds (YouTube, CodePen)
-  - Inline formatting (marker, underline, inline code)
-  - Delimiters
-  - Warnings
-  - Footnotes
-  - Links
+* **Block-Style Editing**
+  Create structured content with paragraphs, headers, quotes, code blocks, tables, embeds, and more.
+* **Clean JSON Output**
+  Editor content is stored and emitted as structured JSON.
+* **Customizable Styling**
+  Control the editor’s background and text colors via Retool properties.
+* **Dynamic Tool Configuration**
+  Enable or disable any formatting tool on the fly from Retool’s inspector.
+* **Rich Formatting Tools**
+
+  * Headers (H1–H4)
+  * Lists (ordered & unordered)
+  * Quotes
+  * Code blocks & inline code
+  * Markers (highlights) & underline
+  * Delimiters
+  * Embeds (YouTube, CodePen)
+  * Tables
+  * Warnings
+  * Links
+  * **Image Upload**: drag-and-drop or select images, automatically uploaded to Supabase, with automatic cleanup of deleted images.
+* **Supabase Integration**
+  Uploads images to your Supabase storage bucket under `articles/{articleId}/content/`, tracks new uploads, and deletes removed files.
 
 ## Installation
 
@@ -35,138 +40,140 @@ A powerful rich text editor custom component for Retool built with Editor.js, pr
    ```bash
    git clone https://github.com/StackdropCO/editorjs-retool-component.git
    ```
-
 2. Install dependencies:
 
    ```bash
    npm install
    ```
-
 3. Log in to Retool:
 
    ```bash
    npx retool-ccl login
    ```
 
-   > Note: You'll need an API access token with read and write scopes for Custom Component Libraries.
-
-4. Create a component library:
+   > You’ll need an API access token with read & write scopes for Custom Component Libraries.
+4. Initialize your component library:
 
    ```bash
    npx retool-ccl init
    ```
-
 5. Start development mode:
 
    ```bash
    npx retool-ccl dev
    ```
-
 6. Deploy your component:
 
    ```bash
    npx retool-ccl deploy
    ```
-
-7. Switch component versions:
-   > To pin your app to the component version you just published, navigate to the Custom Component settings in your Retool app and change dev to the latest version. This may require you to refresh the page to see the newly published version.
+7. In your Retool app’s Custom Component settings, switch your component from `dev` to the new version. Refresh to load it.
 
 ## Configuration
 
-The component exposes the following properties in Retool:
+The component exposes the following Retool properties:
 
-| Property          | Type   | Description                                          |
-| ----------------- | ------ | ---------------------------------------------------- |
-| `content`         | String | The current editor content as JSON string            |
-| `backgroundColor` | String | Background color of the editor (defaults to #f8fafc) |
-| `textColor`       | String | Text color in the editor (defaults to #000)          |
+| Property          | Type   | Description                                                               |
+| ----------------- | ------ | ------------------------------------------------------------------------- |
+| `content`         | String | The current editor content as a JSON string                               |
+| `backgroundColor` | String | Editor background color (defaults to `#f8fafc`)                           |
+| `textColor`       | String | Editor text color (defaults to `#000`)                                    |
+| `supabaseUrl`     | String | Your Supabase project URL                                                 |
+| `supabaseKey`     | String | Your Supabase public anon or service role key                             |
+| `supabaseBucket`  | String | Name of the Supabase storage bucket                                       |
+| `articleId`       | String | Identifier used to namespace images under `articles/{articleId}/content/` |
+
+Internally, the component also maintains a `newImagePaths` array (read-only) for uploaded files.
 
 ### Tool Configuration
 
-Each formatting tool can be enabled or disabled independently through Retool's inspector panel:
+Enable or disable each tool in the inspector panel:
 
 | Tool Property      | Type    | Description                                |
 | ------------------ | ------- | ------------------------------------------ |
-| `enableHeader`     | Boolean | Enable/disable header formatting           |
-| `enableList`       | Boolean | Enable/disable list formatting             |
-| `enableQuote`      | Boolean | Enable/disable quote blocks                |
-| `enableChecklist`  | Boolean | Enable/disable checklist blocks            |
-| `enableCode`       | Boolean | Enable/disable code blocks                 |
-| `enableInlineCode` | Boolean | Enable/disable inline code formatting      |
-| `enableMarker`     | Boolean | Enable/disable marker/highlight formatting |
-| `enableDelimiter`  | Boolean | Enable/disable delimiter blocks            |
-| `enableEmbed`      | Boolean | Enable/disable embed blocks                |
-| `enableTable`      | Boolean | Enable/disable table blocks                |
-| `enableWarning`    | Boolean | Enable/disable warning blocks              |
-| `enableLink`       | Boolean | Enable/disable link tool                   |
-| `enableUnderline`  | Boolean | Enable/disable underline formatting        |
-| `enableFootnotes`  | Boolean | Enable/disable footnotes                   |
+| `enableHeader`     | Boolean | Enable header blocks (H1–H4)               |
+| `enableList`       | Boolean | Enable ordered/unordered lists             |
+| `enableQuote`      | Boolean | Enable quote blocks                        |
+| `enableCode`       | Boolean | Enable fenced code blocks                  |
+| `enableInlineCode` | Boolean | Enable inline code formatting              |
+| `enableMarker`     | Boolean | Enable text highlight (marker)             |
+| `enableDelimiter`  | Boolean | Enable delimiter blocks                    |
+| `enableEmbed`      | Boolean | Enable embedded content (YouTube, CodePen) |
+| `enableTable`      | Boolean | Enable table blocks                        |
+| `enableWarning`    | Boolean | Enable warning/info blocks                 |
+| `enableLink`       | Boolean | Enable hyperlink tool                      |
+| `enableUnderline`  | Boolean | Enable underline formatting                |
+| `enableImage`      | Boolean | **Enable image upload via Supabase**       |
 
 ## Usage Example
 
-### Basic Setup
+1. **Add the component** to your Retool canvas.
+2. **Bind Supabase settings**: supply your `supabaseUrl`, `supabaseKey`, `supabaseBucket`, and a unique `articleId`.
+3. **Initialize content**: set the `content` property to existing JSON if loading.
+4. **Toggle tools**: check the boxes for the formatting options you need.
+5. **Interact**: type, format, embed, and upload images.
 
-1. Drag the Editor.js component onto your Retool canvas
-2. Configure the component settings:
-   - Set `backgroundColor` and `textColor` if desired
-   - Connect `content` to load existing content
-   - Enable/disable specific formatting tools as needed
+   * Images are uploaded to Supabase as soon as they’re added.
+   * Removing an image from the editor triggers automatic deletion from your bucket.
 
-### Saving and Loading Content
-
-1. The `content` property serves as both input and output:
-   - To load content: Set the `content` property to your existing JSON data
-   - To save content: The component will automatically update the `content` property as the user types
-2. You can use the `content` value in queries to save to your database
+You can then use the `content` JSON in your database queries, and Supabase will store only the images currently present in that JSON.
 
 ## Data Structure
 
-Editor.js outputs structured JSON data. Example output:
+Editor.js outputs a JSON structure like:
 
 ```json
 {
   "time": 1635603431943,
   "blocks": [
     {
-      "id": "12345",
+      "id": "abc123",
       "type": "header",
+      "data": { "text": "Hello World", "level": 2 }
+    },
+    {
+      "id": "def456",
+      "type": "image",
       "data": {
-        "text": "Editor.js",
-        "level": 2
+        "file": {
+          "url": "https://xyz.supabase.co/storage/v1/object/public/…jpg",
+          "path": "articles/42/content/my-image.jpg"
+        }
       }
     },
     {
-      "id": "67890",
+      "id": "ghi789",
       "type": "paragraph",
-      "data": {
-        "text": "This is a paragraph block."
-      }
+      "data": { "text": "This is a paragraph with **formatting**." }
     }
   ],
-  "version": "2.23.2"
+  "version": "2.28.0"
 }
 ```
+
+* **Image blocks** include a `path` that’s used for cleanup when blocks are removed.
 
 ## Development
 
 ### Prerequisites
 
-- Node.js >= 20.0.0
-- Retool developer account
+* Node.js ≥ 20.0.0
+* Retool developer account
 
 ### Local Development
 
-1. Run `npm install` to install dependencies
-2. Make changes to the component in the `src` directory
-3. Test your changes using the development mode
+1. Run `npm install`
+2. Edit code in `src/`
+3. Launch with `npx retool-ccl dev`
+4. Test changes in Retool, then `npx retool-ccl deploy` when ready.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Pull requests welcome! Please fork, branch, and open a PR.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
 ## About
 
