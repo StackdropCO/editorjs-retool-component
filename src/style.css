@@ -6,3 +6,354 @@
 .cdx-block {
   max-width: 100% !important;
 }
+
+/* ============================================
+   DRAFT BADGE STYLING
+   ============================================ */
+
+.editor-draft-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 12px;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  text-transform: uppercase;
+}
+
+.editor-draft-badge:hover {
+  opacity: 1;
+}
+
+/* ============================================
+   QUOTE BLOCK STYLING
+   ============================================ */
+
+.cdx-quote-icon svg {
+  transform: rotate(180deg) !important;
+}
+
+.cdx-quote {
+  position: relative !important;
+  margin: 20px 0 !important;
+  padding: 40px 32px 32px 72px !important;
+  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%, #f8fafc 100%) !important;
+  border-left: none !important;
+  border-radius: 20px !important;
+  box-shadow:
+    12px 12px 24px rgba(148, 163, 184, 0.15),
+    -12px -12px 24px rgba(255, 255, 255, 0.7),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 4px rgba(148, 163, 184, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.cdx-quote::before {
+  content: '"' !important;
+  position: absolute !important;
+  top: 24px !important;
+  left: 20px !important;
+  font-size: 72px !important;
+  line-height: 1 !important;
+  font-family: Georgia, serif !important;
+  background: linear-gradient(145deg, #94a3b8, #cbd5e1) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  opacity: 0.4 !important;
+  font-weight: 700 !important;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5) !important;
+}
+
+.cdx-quote__text {
+  position: relative !important;
+  min-height: auto !important;
+  margin-bottom: 16px !important;
+  font-size: 1.15em !important;
+  line-height: 1.7 !important;
+  font-style: italic !important;
+  color: #64748b !important;
+  font-weight: 600 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  text-shadow:
+    2px 2px 4px rgba(255, 255, 255, 0.9),
+    -1px -1px 2px rgba(148, 163, 184, 0.4),
+    1px 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+.cdx-quote__caption {
+  font-size: 0.9em !important;
+  color: #64748b !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  margin-top: 12px !important;
+  text-align: right !important;
+  padding-right: 8px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  text-shadow:
+    2px 2px 4px rgba(255, 255, 255, 0.9),
+    -1px -1px 2px rgba(148, 163, 184, 0.4),
+    1px 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+.cdx-quote__caption::before {
+  content: '— ' !important;
+  color: #94a3b8 !important;
+}
+
+.cdx-quote [contentEditable=true][data-placeholder]::before {
+  position: absolute !important;
+  content: attr(data-placeholder) !important;
+  color: #9ca3af !important;
+  font-weight: normal !important;
+  opacity: 0 !important;
+}
+
+.cdx-quote [contentEditable=true][data-placeholder]:empty::before {
+  opacity: 0.5 !important;
+}
+
+.cdx-quote [contentEditable=true][data-placeholder]:empty:focus::before {
+  opacity: 0 !important;
+}
+
+/* Remove all possible borders from quote inputs */
+.cdx-quote__text,
+.cdx-quote__caption {
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  outline: 0 !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+}
+
+.cdx-quote__text:focus,
+.cdx-quote__caption:focus {
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  outline: 0 !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+}
+
+.cdx-quote-settings {
+  display: flex !important;
+}
+
+.cdx-quote-settings .cdx-settings-button {
+  width: 50% !important;
+}
+
+/* ============================================
+   WARNING BLOCK STYLING
+   ============================================ */
+
+.cdx-warning {
+  position: relative !important;
+  padding: 16px 20px !important;
+  background: linear-gradient(to right, #fef3c7 0%, #fffbeb 40px) !important;
+  border-left: 4px solid #f59e0b !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1) !important;
+}
+
+@media all and (min-width: 736px) {
+  .cdx-warning {
+    padding-left: 56px !important;
+  }
+}
+
+.cdx-warning [contentEditable=true][data-placeholder]::before {
+  position: absolute !important;
+  content: attr(data-placeholder) !important;
+  color: #92400e !important;
+  font-weight: normal !important;
+  opacity: 0 !important;
+}
+
+.cdx-warning [contentEditable=true][data-placeholder]:empty::before {
+  opacity: 0.6 !important;
+}
+
+.cdx-warning [contentEditable=true][data-placeholder]:empty:focus::before {
+  opacity: 0 !important;
+}
+
+.cdx-warning::before {
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='24' height='24' rx='6' fill='%23f59e0b'/%3E%3Crect x='2' y='2' width='24' height='24' rx='6' stroke='%23d97706' stroke-width='2'/%3E%3Cline x1='14' y1='9' x2='14' y2='15' stroke='white' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='14' cy='19' r='1.5' fill='white'/%3E%3C/svg%3E") !important;
+  width: 28px !important;
+  height: 28px !important;
+  background-size: 28px 28px !important;
+  background-repeat: no-repeat !important;
+  position: absolute !important;
+  top: 16px !important;
+  left: 16px !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) !important;
+}
+
+@media all and (max-width: 735px) {
+  .cdx-warning::before {
+    display: none !important;
+  }
+}
+
+.cdx-warning__message {
+  min-height: auto !important;
+  color: #78350f !important;
+  line-height: 1.6 !important;
+  font-size: 0.95em !important;
+}
+
+.cdx-warning__title {
+  margin-bottom: 8px !important;
+  font-weight: 700 !important;
+  color: #92400e !important;
+  font-size: 1em !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* ============================================
+   CODE BLOCK STYLING
+   ============================================ */
+
+.ce-code {
+  position: relative !important;
+  background: #1e293b !important;
+  border-radius: 8px !important;
+  padding: 36px 0 0 0 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+  max-height: none !important;
+}
+
+.ce-code::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 36px !important;
+  background: #0f172a !important;
+  border-bottom: 1px solid #334155 !important;
+  border-radius: 8px 8px 0 0 !important;
+  pointer-events: none !important;
+}
+
+.ce-code::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 14px !important;
+  left: 16px !important;
+  width: 12px !important;
+  height: 12px !important;
+  background: #ef4444 !important;
+  border-radius: 50% !important;
+  box-shadow:
+    18px 0 0 #f59e0b,
+    36px 0 0 #10b981 !important;
+  pointer-events: none !important;
+}
+
+.ce-code__textarea {
+  display: block !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  color: #e2e8f0 !important;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  padding: 16px 20px 20px 20px !important;
+  margin: 0 !important;
+  resize: none !important;
+  tab-size: 2 !important;
+  white-space: pre !important;
+  overflow-wrap: normal !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  max-height: 400px !important;
+  box-sizing: border-box !important;
+}
+
+.ce-code__textarea::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.ce-code__textarea::-webkit-scrollbar-track {
+  background: #1e293b !important;
+  border-radius: 4px !important;
+}
+
+.ce-code__textarea::-webkit-scrollbar-thumb {
+  background: #475569 !important;
+  border-radius: 4px !important;
+}
+
+.ce-code__textarea::-webkit-scrollbar-thumb:hover {
+  background: #64748b !important;
+}
+
+.ce-code__textarea::placeholder {
+  color: #64748b !important;
+  font-style: italic !important;
+}
+
+/* Syntax-like styling for common patterns */
+.ce-code__textarea {
+  /* This is a basic styling - actual syntax highlighting would require a library */
+  font-variant-ligatures: common-ligatures !important;
+}
+
+/* ============================================
+   DELIMITER BLOCK STYLING
+   ============================================ */
+
+.ce-delimiter {
+  line-height: 1.6em !important;
+  width: 100% !important;
+  text-align: center !important;
+  position: relative !important;
+  padding: 8px 0 !important;
+  margin: 16px 0 !important;
+}
+
+.ce-delimiter::before {
+  display: inline-block !important;
+  content: '' !important;
+  width: 100% !important;
+  height: 2px !important;
+  background: linear-gradient(to right, transparent 0%, #cbd5e1 20%, #94a3b8 50%, #cbd5e1 80%, transparent 100%) !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  transform: translateY(-50%) !important;
+}
+
+.ce-delimiter::after {
+  content: '◆' !important;
+  display: inline-block !important;
+  position: relative !important;
+  background: var(--editor-bg-color, #f8fafc) !important;
+  padding: 0 16px !important;
+  color: #64748b !important;
+  font-size: 16px !important;
+  z-index: 1 !important;
+  letter-spacing: 0.2em !important;
+}
+
